@@ -1,24 +1,16 @@
-# app
+# 尚品汇vue项目
 
-## Project setup
-```
-npm install
-```
+## 9.22更新
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### 内容
 
-### Compiles and minifies for production
-```
-npm run build
-```
+完成非路由组件的配置（Header、Footer）
 
-### Lints and fixes files
-```
-npm run lint
-```
+添加路由器和路由组件，实现了点击 登录、注册 进行路由跳转(Login、Register)
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 注意
+
+样式使用less需要less-loader(npm i less-loader@3.0.0)
+
+<router-link> 中路径跳转用 to=”***“
+
