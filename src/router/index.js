@@ -25,7 +25,7 @@ VueRouter.prototype.replace = function (location, resolve, reject) {
 const router = new VueRouter({
     routes: [
         {
-            name: 'Login',
+            name: 'login',
             path: '/login',
             component: Login,
             meta: {
@@ -33,7 +33,7 @@ const router = new VueRouter({
             }
         },
         {
-            name: 'Search',
+            name: 'search',
             path: '/search',
             component: Search,
             meta: {
@@ -41,7 +41,7 @@ const router = new VueRouter({
             }
         },
         {
-            name: 'Home',
+            name: 'home',
             path: '/home',
             component: Home,
             meta: {
@@ -49,7 +49,7 @@ const router = new VueRouter({
             }
         },
         {
-            name: 'Register',
+            name: 'register',
             path: '/register',
             component: Register,
             meta: {
