@@ -48,16 +48,17 @@
         name: 'Header',
         methods: {
             goSearch() {
-                this.$router.push({
-                    name: "Search",
-                    params: { 
-                        keyword: this.keyWord
+                let location = {
+                    name: "search",
+                    params: {
+                        k: this.keyWord || undefined
                     },
-                    query: {
-                        k: this.keyWord.toUpperCase()
-                    }
-                })
-
+                }
+                if (this.$route.query) {
+                    location.query = this.$route.query
+                }
+                this.$router.push(location)
+                this.keyWord = ''
             }
         },
         data() {

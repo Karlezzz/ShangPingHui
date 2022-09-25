@@ -75,3 +75,34 @@
 ​	②对需要路由的标签添加自定义属性（：属性名），让路由跳转函数判读是否存在该自定义属性从而让其实现路由跳转
 
 ​	③获取自定义属性：event.target.dataset返回数据对象
+
+
+
+## 9.25学习
+
+### 内容
+
+1.Nav组件在Home组件下一直展示，在Search组件下被动展示。在Search组件下，Nav组件展示增加过度动画
+
+2.合并提交给Search路由组件的参数。点击Nav提交query参数，搜索框提交params参数，对其进行合并提交
+
+3.安装配置mockjs插件，获取虚拟随机数据
+
+### 重点
+
+1.数据请求优化，避免使用Nav时多次请求相同数据造成资源浪费。把数据请求函数放在App根组件的mounted中实现只请求一次数据
+
+2.通过v-show来实现Nav组件在不同情况下的展示状态
+
+3.过渡动画需要在有v-if、v-show的情况下使用，再次学习过度动画的实现。transition标签加name，简化less书写。
+
+​	.className-动作（开始状态） .className-动作-to（结束状态） .className-动作-active（动画调用）
+
+​	tip：在 .className-动作-active加入overflow:hidden 避免文字提前展示
+
+4.如果需要用params传参，路由配置中需要在path中添加预定key值（' search/:keyword1/:keyword2/.../? '）
+
+​	需要在Nav和搜索框中分别设置参数组合
+
+5.mockjs，提供随机虚拟数据。
+

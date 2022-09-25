@@ -18,6 +18,9 @@
       Footer,
       Header,
     },
+    mounted(){
+      this.$store.dispatch('categoryList')
+    }
   }
 </script>
 

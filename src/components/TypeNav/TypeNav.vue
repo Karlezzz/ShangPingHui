@@ -1,6 +1,6 @@
 <template>
     <div class="type-nav">
-        <div class="container">
+        <div class="container" @mouseenter="enterShow" @mouseleave="leaveShow">
             <h2 class="all">全部商品分类</h2>
             <nav class="nav">
                 <a href="###">服装城</a>
@@ -12,32 +12,34 @@
                 <a href="###">有趣</a>
                 <a href="###">秒杀</a>
             </nav>
-            <div class="sort">
-                <div class="all-sort-list2" @click="goSearch">
-                    <div class="item" v-for="c1 in categoryList" :key="c1.categoryId">
-                        <h3>
-                            <a :data-categoryName="c1.categoryName"
-                                :data-category1Id="c1.categoryId">{{c1.categoryName}}</a>
-                        </h3>
-                        <div class="item-list clearfix">
-                            <div class="subitem" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
-                                <dl class="fore">
-                                    <dt>
-                                        <a :data-categoryName="c2.categoryName"
-                                            :data-category2Id="c2.category2Id">{{c2.categoryName}}</a>
-                                    </dt>
-                                    <dd>
-                                        <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                                            <a :data-categoryName="c3.categoryName"
-                                                :data-category3Id="c3.category3Id">{{c3.categoryName}}</a>
-                                        </em>
-                                    </dd>
-                                </dl>
+            <transition name="sort">
+                <div class="sort" v-show="isShow">
+                    <div class="all-sort-list2" @click="goSearch">
+                        <div class="item" v-for="c1 in categoryList" :key="c1.categoryId">
+                            <h3>
+                                <a :data-categoryName="c1.categoryName"
+                                    :data-category1Id="c1.categoryId">{{c1.categoryName}}</a>
+                            </h3>
+                            <div class="item-list clearfix">
+                                <div class="subitem" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
+                                    <dl class="fore">
+                                        <dt>
+                                            <a :data-categoryName="c2.categoryName"
+                                                :data-category2Id="c2.categoryId">{{c2.categoryName}}</a>
+                                        </dt>
+                                        <dd>
+                                            <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
+                                                <a :data-categoryName="c3.categoryName"
+                                                    :data-category3Id="c3.categoryId">{{c3.categoryName}}</a>
+                                            </em>
+                                        </dd>
+                                    </dl>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </transition>
         </div>
     </div>
 </template>
@@ -49,14 +51,18 @@
     export default {
         name: 'TypeNav',
         mounted() {
-            this.$store.dispatch('categoryList')
+            if (this.$route.path === '/home')
+                this.isShow = true
+            else this.isShow = false
+
         },
         computed: {
             ...mapState({
                 categoryList: (state) => {
                     return state.home.categoryList.slice(0, 16)
                 }
-            })
+            }),
+
         },
         methods: {
             goSearch(event) {
@@ -80,10 +86,27 @@
                     } else if (category3id) {
                         query.category3Id = category3id
                     }
+                    if (this.$route.params) {
+                        location.params = this.$route.params
+                    }
                     location.query = query
                     this.$router.push(location)
+
                 }
 
+            },
+            enterShow() {
+                this.isShow = true
+            },
+            leaveShow() {
+                if (this.$route.path === '/home')
+                    this.isShow = true
+                else this.isShow = false
+            }
+        },
+        data() {
+            return {
+                isShow: true
             }
         },
     }
@@ -108,7 +131,9 @@
                 color: #fff;
                 font-size: 14px;
                 font-weight: bold;
+                cursor: pointer;
             }
+
 
             .nav {
                 a {
@@ -145,7 +170,6 @@
                                 color: #333;
                             }
                         }
-
 
                         .item-list {
                             display: none;
@@ -213,6 +237,32 @@
                         cursor: pointer;
                     }
                 }
+            }
+
+            .sort-enter {
+                height: 0px;
+            }
+
+            .sort-enter-to {
+                height: 461px;
+            }
+
+            .sort-enter-active {
+                transition: all 0.3s linear;
+                overflow: hidden;
+            }
+
+            .sort-leave {
+                height: 461px;
+            }
+
+            .sort-leave-to {
+                height: 0;
+            }
+
+            .sort-leave-active {
+                transition: all 0.3s linear;
+                overflow: hidden;
             }
         }
     }

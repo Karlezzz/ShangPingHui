@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import router from './router/index.js'
 import TypeNav from './components/TypeNav/TypeNav.vue'
 import store from './store'
+import './mock/mockServer'
 
 Vue.component('TypeNav', TypeNav)
 Vue.use(VueRouter)

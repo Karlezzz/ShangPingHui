@@ -34,7 +34,7 @@ const router = new VueRouter({
         },
         {
             name: 'search',
-            path: '/search',
+            path: '/search/:k?',
             component: Search,
             meta: {
                 isShow: true
