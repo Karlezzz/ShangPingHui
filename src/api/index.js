@@ -1,9 +1,8 @@
 import requests from "./request";
+import mockRequests from "./request_mock"
 
+export const reqCategoryList = () => requests.get('/product/getBaseCategoryList')
 
-export const reqCategoryList = () => {
-    return requests({
-        url: '/product/getBaseCategoryList',
-        method: 'get'
-    })
-}
+export const reqGetBannerList = () => mockRequests.get('/banner')
+
+export const reqGetFloorList = () => mockRequests.get('/floor')

@@ -106,3 +106,32 @@
 
 5.mockjs，提供随机虚拟数据。
 
+
+
+## 9.26学习
+
+### 内容
+
+1.使用swiper实现轮播图
+
+2.实现向mock请求数据，动态配置Banner、Floor组件数据
+
+3.封装轮播图，形成Carousel组件
+
+### 重点
+
+1.实现swiper：
+
+​	①引入依赖包（swiper.js/swiper.css）
+
+​	②配置相应template
+
+​	③初始化swiper实例：在watch中，使用$nextTick()初始化swiper，启用立即监听：immediate：true
+
+2.$nextTick:在下次DOM更新循环结束后，执行回调。在修改数据之后，立刻执行方法
+
+
+
+
+
+​	
