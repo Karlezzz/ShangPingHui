@@ -132,6 +132,16 @@
 
 
 
+## 9.28学习
 
+### 内容
 
-​	
+1.配置Search组件
+
+2.配置Search的api请求，使用post方法，需要至少一个空对象作为参数 request({path:'/list', method:"post", params})
+
+3.配置vuex，actions -> mutations -> state -> Search下dispatch
+
+### 重点
+
+在post请求中，需要传入至少一个空对象最为参数
