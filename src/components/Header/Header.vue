@@ -33,7 +33,7 @@
                 <div class="searchArea">
                     <form action="###" class="searchForm">
                         <input type="text" id="autocomplete" class="input-error input-xxlarge" @keyup.enter="goSearch"
-                            v-model="keyWord" />
+                            v-model="keyword" />
                         <button class="sui-btn btn-xlarge btn-danger" type="button" @click="goSearch">搜索</button>
                     </form>
                 </div>
@@ -51,19 +51,19 @@
                 let location = {
                     name: "search",
                     params: {
-                        k: this.keyWord || undefined
+                        keyword: this.keyword || undefined
                     },
                 }
                 if (this.$route.query) {
                     location.query = this.$route.query
                 }
                 this.$router.push(location)
-                this.keyWord = ''
+                this.keyword = ''
             }
         },
         data() {
             return {
-                keyWord: ''
+                keyword: ''
             }
         },
     }
