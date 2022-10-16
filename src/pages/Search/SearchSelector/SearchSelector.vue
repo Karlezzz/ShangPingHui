@@ -4,7 +4,7 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
-          <li v-for="trademark in trademarkList" :key="trademark.tmId">{{trademark.tmName}}</li>
+          <li v-for="trademark in trademarkList" :key="trademark.tmId" @click="trademarkHandler(trademark)">{{trademark.tmName}}</li>
         </ul>
       </div>
       <div class="ext">
@@ -15,8 +15,8 @@
     <div class="type-wrap" v-for="attr in attrsList" :key="attr.attrId">
       <div class="fl key">{{attr.attrName}}</div>
       <div class="fl value">
-        <ul class="type-list" v-for="(attrValue,index) in attr.attrValueList" :key="index">
-          <li>
+        <ul class="type-list" v-for="(attrValue,index) in attr.attrValueList" :key="index" @click="attrInfo(attr.attrId,attrValue,attr.attrName)">
+          <li >
             <a>{{attrValue}}</a>
           </li>
         </ul>
@@ -29,12 +29,19 @@
 <script>
 import { mapGetters } from 'vuex'
 
-  export default {
+  export default { 
     name: 'SearchSelector',
     computed:{
       ...mapGetters(['trademarkList','attrsList'])
     },
-    
+    methods: {
+      trademarkHandler(trademark){
+        this.$emit('trademarkInfo',trademark)
+      },
+      attrInfo(attrId,attrValue,attrName){
+        this.$emit('attrInfo',attrId,attrValue,attrName)
+      }
+    },
   }
 </script>
 
@@ -93,6 +100,7 @@ import { mapGetters } from 'vuex'
             color: #e1251b;
             font-style: italic;
             font-size: 14px;
+            cursor: pointer;
 
             img {
               max-width: 100%;
@@ -107,6 +115,7 @@ import { mapGetters } from 'vuex'
             display: block;
             margin-right: 30px;
             line-height: 26px;
+            cursor: pointer;
 
             a {
               text-decoration: none;

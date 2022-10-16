@@ -1,7 +1,7 @@
 <template>
     <div class="type-nav">
         <div class="container" @mouseenter="enterShow" @mouseleave="leaveShow">
-            <h2 class="all">全部商品分类</h2>
+            <h2 class="all" >全部商品分类</h2>
             <nav class="nav">
                 <a href="###">服装城</a>
                 <a href="###">美妆馆</a>

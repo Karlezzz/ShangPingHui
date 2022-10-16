@@ -11,15 +11,30 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <li class="with-x" v-if="searchParams.categoryName">
+              {{searchParams.categoryName}}
+              <i @click="removeCategoryName">×</i>
+            </li>
+
+            <li class="with-x" v-if="searchParams.keyword">
+              {{searchParams.keyword}}
+              <i @click="removeCategoryKeyword">×</i>
+            </li>
+
+            <li class="with-x" v-if="searchParams.trademark">
+              {{searchParams.trademark.split(':')[1]}}
+              <i @click="removeTrademark">×</i>
+            </li>
+
+            <li class="with-x" v-if="searchParams.props" v-for="(i,index) in searchParams.props" :key="index">
+              {{i.split(':')[1]}}
+              <i @click="removeAttrInfo(index)">×</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo" />
 
         <!--details-->
         <div class="details clearfix">
@@ -138,8 +153,16 @@
     },
     watch: {
       $route() {
+        this.searchParams.category1Id = ''
+        this.searchParams.category2Id = ''
+        this.searchParams.category3Id = ''
+        Object.assign(this.searchParams, this.$route.query, this.$route.params)
         this.getDate()
+
       }
+    },
+    beforeMount() {
+      Object.assign(this.searchParams, this.$route.query, this.$route.params)
     },
     mounted() {
       this.getDate()
@@ -149,11 +172,39 @@
     },
     methods: {
       getDate() {
-        this.searchParams.category1Id = ''
-        this.searchParams.category2Id = ''
-        this.searchParams.category3Id = ''
-        Object.assign(this.searchParams, this.$route.query, this.$route.params)
         this.$store.dispatch('getSearchList', this.searchParams)
+      },
+      removeCategoryName() {
+        this.searchParams = {}
+        this.$router.push({
+          name: 'search',
+          params: this.$route.params
+        })
+      },
+      removeCategoryKeyword() {
+        this.searchParams.keyword = undefined
+        this.$router.push({
+          name: 'search',
+          query: this.$route.query
+        })
+      },
+      trademarkInfo(trademark) {
+        this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`
+        this.getDate()
+      },
+      removeTrademark() {
+        this.searchParams.trademark = undefined
+        this.getDate()
+      },
+      attrInfo(attrId, attrValue, attrName) {
+        let prop = `${attrId}:${attrValue}:${attrName}`
+        if(this.searchParams.props.indexOf(prop)===-1)
+          this.searchParams.props.push(prop)
+        this.getDate()
+      },
+      removeAttrInfo(index) {
+        this.searchParams.props.splice(index,1) 
+        this.getDate()
       }
     },
   }
