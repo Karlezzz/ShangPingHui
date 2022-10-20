@@ -41,23 +41,17 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{active:isOne}" @click="changeOrder(1)">
+                  <a>综合
+                    <span v-show="isOne" class="iconfont" :class="orderType">
+                    </span>
+                  </a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{active:isTwo}" @click="changeOrder(2)">
+                  <a>价格
+                    <span v-show="isTwo" class="iconfont" :class="orderType">
+                    </span>
+                  </a>
                 </li>
               </ul>
             </div>
@@ -90,35 +84,7 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <Pagination  :pageNo="2" :pageSize="3" :total="12" :continues="5"> </Pagination>
         </div>
       </div>
     </div>
@@ -130,11 +96,13 @@
     mapGetters
   } from 'vuex'
   import SearchSelector from './SearchSelector/SearchSelector'
+import Pagination from '../../components/Pagination/Pagination.vue'
   export default {
     name: 'Search',
     components: {
-      SearchSelector
-    },
+    SearchSelector,
+    Pagination
+},
     data() {
       return {
         searchParams: {
@@ -143,7 +111,7 @@
           category3Id: "",
           categoryName: "",
           keyword: "",
-          order: "",
+          order: "2:desc",
           pageNo: 1,
           pageSize: 10,
           props: [],
@@ -168,7 +136,23 @@
       this.getDate()
     },
     computed: {
-      ...mapGetters(['goodsList'])
+      ...mapGetters(['goodsList']),
+      isOne() {
+        return this.searchParams.order.indexOf('1') !== -1
+      },
+      isTwo() {
+        return this.searchParams.order.indexOf('2') !== -1
+      },
+      isDesc() {
+        return this.searchParams.order.indexOf('desc') !== -1
+      },
+      isAsc() {
+        return this.searchParams.order.indexOf('asc') !== -1
+      },
+      orderType(){
+        return this.searchParams.order.indexOf('desc')!==-1 ? 'icon-long-arrow-down' : 'icon-long-arrow-up'
+      }
+
     },
     methods: {
       getDate() {
@@ -198,12 +182,16 @@
       },
       attrInfo(attrId, attrValue, attrName) {
         let prop = `${attrId}:${attrValue}:${attrName}`
-        if(this.searchParams.props.indexOf(prop)===-1)
+        if (this.searchParams.props.indexOf(prop) === -1)
           this.searchParams.props.push(prop)
         this.getDate()
       },
       removeAttrInfo(index) {
-        this.searchParams.props.splice(index,1) 
+        this.searchParams.props.splice(index, 1)
+        this.getDate()
+      },
+      changeOrder(flag){
+        this.searchParams.order = this.searchParams.order.indexOf('desc')!==-1? `${flag}:asc` : `${flag}:desc`
         this.getDate()
       }
     },
@@ -211,6 +199,14 @@
 </script>
 
 <style lang="less" scoped>
+  .iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   .main {
     margin: 10px 0;
 

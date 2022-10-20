@@ -195,3 +195,64 @@ nav数据，search数据，品牌信息和商品属性添加到面包屑
 ​	②删除：删去props数组中指定元素(props.splice())，重新获取数据getDate()
 
 tip:search和nav不用获取数据是因为进行路由跳转带参数，而其他没用进行路由跳转
+
+
+
+## 10.20学习
+
+### 内容
+
+1.内容排序
+
+2.封装分页器组件（编写分页器逻辑）
+
+### 重点
+
+1.内容排序
+
+​	①根据searchParams.order来进行排序规则
+
+​	②学习运用阿里icon
+
+​	③计算属性：
+
+​		判断order为1还是2，来决定被选中样式	判断order为desc还是asc，决定icon图标
+
+​	④orderType(flag) 在不同项目中传入不同flag值，代表order的数字。 再次判断原本是否为降序，是则改为asc否则改为desc。（三元运算），重新获取数据getDate()
+
+2.封装分页器组件Pagination
+
+​	①参数有pageNo（当前页），pageSize（一页内容数），total（总内容数），continues（连续页个数）
+
+​	②连续页的start和end逻辑：
+
+```javascript
+let start, end = 0
+const {
+    totalPage,
+    continues,
+    pageNo
+} = this
+if (totalPage >= continues + 4) {  //4:首尾页各1，省略号至少代表一页 2
+	if (pageNo >= continues && t.pageNo <= totalPage - continues + 1) { // 当前页要处于最小最大分页省略范围内
+		start = pageNo - parseInt(continues/2)
+	} else {
+		if (pageNo < continues) { 
+			start = 1
+        } else if (pageNo > totalPage - continues + 1) {
+            start = totalPage - continues + 1
+        }
+    }
+    end = start + continues - 1
+} else {  
+    start = 1
+    end = totalPage
+}
+return {
+    start,
+    end
+}
+```
+
+
+
