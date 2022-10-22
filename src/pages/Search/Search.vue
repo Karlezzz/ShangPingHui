@@ -26,8 +26,8 @@
               <i @click="removeTrademark">×</i>
             </li>
 
-            <li class="with-x" v-if="searchParams.props" v-for="(i,index) in searchParams.props" :key="index">
-              {{i.split(':')[1]}}
+            <li class="with-x" v-if="searchParams.props" v-for="(attrValue,index) in searchParams.props" :key="index">
+              {{attrValue.split(':')[1]}}
               <i @click="removeAttrInfo(index)">×</i>
             </li>
           </ul>
@@ -56,12 +56,15 @@
               </ul>
             </div>
           </div>
+
           <div class="goods-list">
             <ul class="yui3-g">
               <li class="yui3-u-1-5" v-for="item in goodsList" :key="item.id">
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="item.html" target="_blank"><img :src="item.defaultImg" /></a>
+                    <router-link :to="`/detail/${item.id}`">
+                      <img :src="item.defaultImg" />
+                    </router-link>
                   </div>
                   <div class="price">
                     <strong>
@@ -84,7 +87,9 @@
               </li>
             </ul>
           </div>
-          <Pagination  :pageNo="2" :pageSize="3" :total="12" :continues="5"> </Pagination>
+
+          <Pagination :pageNo="this.searchParams.pageNo" :pageSize="this.searchParams.pageSize" :total="total"
+            :continues="5" @getPageNo="getPageNo"> </Pagination>
         </div>
       </div>
     </div>
@@ -93,16 +98,17 @@
 
 <script>
   import {
-    mapGetters
+    mapGetters,
+    mapState
   } from 'vuex'
   import SearchSelector from './SearchSelector/SearchSelector'
-import Pagination from '../../components/Pagination/Pagination.vue'
+  import Pagination from '../../components/Pagination/Pagination.vue'
   export default {
     name: 'Search',
     components: {
-    SearchSelector,
-    Pagination
-},
+      SearchSelector,
+      Pagination
+    },
     data() {
       return {
         searchParams: {
@@ -111,7 +117,7 @@ import Pagination from '../../components/Pagination/Pagination.vue'
           category3Id: "",
           categoryName: "",
           keyword: "",
-          order: "2:desc",
+          order: "1:desc",
           pageNo: 1,
           pageSize: 10,
           props: [],
@@ -137,6 +143,12 @@ import Pagination from '../../components/Pagination/Pagination.vue'
     },
     computed: {
       ...mapGetters(['goodsList']),
+      ...mapState({
+        total: state => state.search.searchList.total,
+        // pageSize: state => state.search.searchList.pageSize,
+        // pageNo: state => state.search.searchList.pageNo,
+        // totalPages: state => state.search.searchList.totalPages
+      }),
       isOne() {
         return this.searchParams.order.indexOf('1') !== -1
       },
@@ -149,8 +161,8 @@ import Pagination from '../../components/Pagination/Pagination.vue'
       isAsc() {
         return this.searchParams.order.indexOf('asc') !== -1
       },
-      orderType(){
-        return this.searchParams.order.indexOf('desc')!==-1 ? 'icon-long-arrow-down' : 'icon-long-arrow-up'
+      orderType() {
+        return this.searchParams.order.indexOf('desc') !== -1 ? 'icon-long-arrow-down' : 'icon-long-arrow-up'
       }
 
     },
@@ -159,14 +171,14 @@ import Pagination from '../../components/Pagination/Pagination.vue'
         this.$store.dispatch('getSearchList', this.searchParams)
       },
       removeCategoryName() {
-        this.searchParams = {}
+        this.searchParams.categoryName = "";
         this.$router.push({
           name: 'search',
           params: this.$route.params
         })
       },
       removeCategoryKeyword() {
-        this.searchParams.keyword = undefined
+        this.searchParams.keyword = ''
         this.$router.push({
           name: 'search',
           query: this.$route.query
@@ -186,14 +198,19 @@ import Pagination from '../../components/Pagination/Pagination.vue'
           this.searchParams.props.push(prop)
         this.getDate()
       },
-      removeAttrInfo(index) {
-        this.searchParams.props.splice(index, 1)
+      removeAttrInfo(i) {
+        this.searchParams.props.splice(i, 1)
         this.getDate()
       },
-      changeOrder(flag){
-        this.searchParams.order = this.searchParams.order.indexOf('desc')!==-1? `${flag}:asc` : `${flag}:desc`
+      changeOrder(flag) {
+        this.searchParams.order = this.searchParams.order.indexOf('desc') !== -1 ? `${flag}:asc` : `${flag}:desc`
         this.getDate()
-      }
+      },
+      getPageNo(pageNo) {
+        this.searchParams.pageNo = pageNo
+        this.getDate()
+      },
+      
     },
   }
 </script>

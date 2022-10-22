@@ -28,6 +28,9 @@ const getters = {
     },
     attrsList(state) {
         return state.searchList.attrsList || []
+    },
+    totalGoods(state){
+        return state.searchList.total || []
     }
 
 }

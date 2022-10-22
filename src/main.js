@@ -9,7 +9,7 @@ import store from './store'
 import './mock/mockServer'
 import 'swiper/css/swiper.css'
 
-Vue.component(Pagination.name,Pagination)
+Vue.component(Pagination.name, Pagination)
 Vue.component(Carousel.name, Carousel)
 Vue.component(TypeNav.name, TypeNav)
 Vue.use(VueRouter)
@@ -18,5 +18,8 @@ Vue.config.productionTip = false
 new Vue({
   render: h => h(App),
   router,
-  store
+  store,
+  beforeCreate() {
+    Vue.prototype.$bus = this
+  }
 }).$mount('#app')

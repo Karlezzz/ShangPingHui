@@ -13,3 +13,8 @@ export const reqGetSearchInfo = (params) => requests({
     method: 'post',
     data: params
 })
+
+export const reqGoodsInfo = (skuId) =>requests({
+    method:'get',
+    url:`/item/${skuId}`,
+})
