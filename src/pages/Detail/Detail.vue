@@ -17,7 +17,7 @@
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom :skuDefaultImg="skuInfo.skuDefaultImg" :skuImageList="skuImageList"/>
+          <Zoom :skuDefaultImg="skuInfo.skuDefaultImg" :skuImageList="skuImageList" />
           <!-- 小图列表 -->
           <ImageList :skuImageList="skuImageList" />
 
@@ -69,19 +69,20 @@
                 <dt class="title">{{spuSaleAttrList.saleAttrName}}</dt>
                 <dd changepirce="0" :class="{active:spuSaleAttrValueList.isChecked==1}"
                   v-for="(spuSaleAttrValueList,index) in spuSaleAttrList.spuSaleAttrValueList"
-                  :key="spuSaleAttrValueList.id" @click="changeActive(spuSaleAttrValueList,spuSaleAttrList.spuSaleAttrValueList)">
+                  :key="spuSaleAttrValueList.id"
+                  @click="changeActive(spuSaleAttrValueList,spuSaleAttrList.spuSaleAttrValueList)">
                   {{spuSaleAttrValueList.saleAttrValueName}}</dd>
               </dl>
 
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt">
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" v-model="skuNum" @blur="handler">
+                <a href="javascript:" class="plus" @click="plus">+</a>
+                <a href="javascript:" class="mins" @click="mins">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a @click="addShopCar">加入购物车</a>
               </div>
             </div>
           </div>
@@ -341,7 +342,11 @@
 
   export default {
     name: 'Detail',
-
+    data() {
+      return {
+        skuNum: 1
+      }
+    },
     components: {
       ImageList,
       Zoom,
@@ -358,10 +363,37 @@
     },
     methods: {
       changeActive(sonValue, fatherValue) {
-        fatherValue.forEach((item)=>{
+        fatherValue.forEach((item) => {
           item.isChecked = '0'
         })
-        sonValue.isChecked='1'
+        sonValue.isChecked = '1'
+      },
+      plus() {
+        this.skuNum = this.skuNum + 1
+      },
+      mins() {
+        if (this.skuNum <= 1) this.skuNum = 1
+        else this.skuNum = this.skuNum - 1
+      },
+      handler(event) {
+        let value = event.target.value
+        if (isNaN(value) || value < 1) {
+          this.skuNum = 1
+        } else {
+          this.skuNum = parseInt(value)
+        }
+      },
+      async addShopCar() {
+        try {
+          await this.$store.dispatch('addOrUpdateShopCar', {
+            skuid: this.$route.params.skuid,
+            skuNum: this.skuNum
+          })
+          sessionStorage.setItem('SKUINFO',JSON.stringify(this.skuInfo))
+          this.$router.push({name:'addCartSuccess',query:{skuNum:this.skuNum}})
+        } catch (error) {
+          alert(error.message)
+        }
       }
     },
   }

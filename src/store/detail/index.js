@@ -1,4 +1,5 @@
 import {
+    reqAddOrUpdateShopCar,
     reqGoodsInfo
 } from "@/api"
 const state = {
@@ -12,7 +13,16 @@ const actions = {
         if (result.code === 200) {
             commit('GETGOODSINFO', result.data)
         }
-    }
+    },
+    async addOrUpdateShopCar({commit},{skuid,skuNum}){
+        let result = await reqAddOrUpdateShopCar(skuid,skuNum)
+        if(result.code===200){
+            return '成功'
+        }else {
+            return Promise.reject(new Error('faile'))
+        }
+    },
+    
 }
 const mutations = {
     GETGOODSINFO(state, goodInfo) {

@@ -24,7 +24,6 @@
       skuImageList(newValue, oldValue) {
         this.$nextTick(() => {
            new Swiper(this.$refs.cur, {
-            autoplay: true,
             slidesPerView:3,
             // 如果需要前进后退按钮
             navigation: {

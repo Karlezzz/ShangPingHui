@@ -3,6 +3,8 @@ import Search from '../pages/Search/Search.vue'
 import Home from '../pages/Home/Home.vue'
 import Register from '../pages/Register/Register.vue'
 import Detail from '../pages/Detail/Detail.vue'
+import AddCartSuccess from '../pages/AddCartSuccess/AddCartSuccess.vue'
+
 export default [{
         name: 'login',
         path: '/login',
@@ -49,7 +51,14 @@ export default [{
         meta: {
             isShow: false
         }
+    },
+    {
+        name: 'addCartSuccess',
+        path: '/addCartSuccess',
+        component: AddCartSuccess,
+        meta: {
+            isShow: true
+        }
     }
-
 ]
 

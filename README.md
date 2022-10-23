@@ -311,3 +311,27 @@ return {
 ​			4）getters：计算state属性，让组件调用更简单
 
 ​			5）对应组件在mounted中dispatch来请求数据
+
+
+
+## 10.23
+
+### 内容
+
+1.完成detail页面数量选择，加入购物车跳转
+
+2.完成成功添加购物车组件
+
+### 重点
+
+1.选择数量为input框，防止用户输入非法内容，需要进行判断
+
+2.配置add组件api
+
+3.配置vuex
+
+​	①因为不是请求数据，所以只需要配置actions。如果异步请求失败，返回promise.reject()
+
+​	②当点击加入购物车，实行异步操作，使用try catch 来处理请求。成功则将detail数据传入会话存储空间，并进行路由跳转到AddCartSuccess（query）
+
+4.动态展示add组件内容
