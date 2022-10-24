@@ -2,8 +2,10 @@ import {
     reqAddOrUpdateShopCar,
     reqGoodsInfo
 } from "@/api"
+import {getNanoId} from '@/utils/nanoid_token'
 const state = {
-    goodInfo: {}
+    goodInfo: {},
+    nanoid_token:getNanoId()
 }
 const actions = {
     async getGoodsInfo({

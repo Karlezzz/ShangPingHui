@@ -334,4 +334,34 @@ return {
 
 ​	②当点击加入购物车，实行异步操作，使用try catch 来处理请求。成功则将detail数据传入会话存储空间，并进行路由跳转到AddCartSuccess（query）
 
-4.动态展示add组件内容
+4.动态展示add组件内容 
+
+
+
+## 10.24
+
+### 内容
+
+1.返回detial
+
+2.购物车静态组件
+
+3.发请求，获取购物车数据，配置vuex，组件展示数据
+
+4.用nanoid给游客身份
+
+5.改变商品数量
+
+### 重点
+
+1.返回detial。通过获取sessionstorge数据，进行路由跳转
+
+2.配置shopCart的vuex
+
+​	重点重点：mutations：函数获取state中数据要用state.info[]，而不是this.info[]
+
+3.因为需要总是请求数据，所以封装getData()方法
+
+4.在ajax封装中，使用nanoid，将nanoid放入请求头中。并运用单例模式，使id唯一
+
+5.改变数量有三种选择，通过传入不同的参数来判断数量改变方式。处理用户输入后，提交修改请求，利用promise.then()重新请求数据

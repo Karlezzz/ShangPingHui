@@ -4,6 +4,7 @@ import Home from '../pages/Home/Home.vue'
 import Register from '../pages/Register/Register.vue'
 import Detail from '../pages/Detail/Detail.vue'
 import AddCartSuccess from '../pages/AddCartSuccess/AddCartSuccess.vue'
+import ShopCart from '../pages/ShopCart/ShopCart.vue'
 
 export default [{
         name: 'login',
@@ -59,6 +60,14 @@ export default [{
         meta: {
             isShow: true
         }
-    }
+    },
+    {
+        name: 'shopCart',
+        path: '/shopCart',
+        component: ShopCart,
+        meta: {
+            isShow: true
+        }
+    },
 ]
 
