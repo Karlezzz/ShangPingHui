@@ -16,13 +16,13 @@
 
                         <div class="input-text clearFix">
                             <i></i>
-                            <input type="text" placeholder="手机号">
+                            <input type="text" placeholder="手机号" v-model="phone">
                             <span class="error-msg">错误提示信息</span>
                         </div>
 
                         <div class="input-text clearFix">
                             <i class="pwd"></i>
-                            <input type="text" placeholder="请输入密码">
+                            <input type="password" placeholder="请输入密码" v-model="password">
                             <span class="error-msg">错误提示信息</span>
                         </div>
 
@@ -33,7 +33,7 @@
                             </label>
                             <span class="forget">忘记密码？</span>
                         </div>
-                        <button class="btn">登&nbsp;&nbsp;录</button>
+                        <button class="btn" @click.prevent="login">登&nbsp;&nbsp;录</button>
 
                     </form>
                     <div class="call clearFix">
@@ -43,7 +43,7 @@
                             <li><img src="./images/ali.png" alt=""></li>
                             <li><img src="./images/weixin.png" alt=""></li>
                         </ul>
-                        <a href="##" class="register">立即注册</a>
+                        <router-link to="/register" class="register">立即注册</router-link>
                     </div>
                 </div>
             </div>
@@ -53,7 +53,33 @@
 
 <script>
     export default {
-        name: 'Login'
+        name: 'Login',
+        data() {
+            return {
+                phone: '',
+                password: ''
+            }
+        },
+        methods: {
+            login() {
+                const data = {
+                    phone: this.phone,
+                    password: this.password
+                }
+                if (this.phone && this.password) {
+                    this.$store.dispatch('userLogin', data)
+                        .then(() => {
+                            this.$router.push('/home')
+                            console.log(this.$store.state);
+                            JSON.stringify(sessionStorage.setItem('token',this.$store.state.user.token))
+                        })
+                        .catch((error)=>{
+                            console.log(error.message);
+                        })
+                }
+
+            }
+        }
     }
 </script>
 
@@ -188,6 +214,7 @@
                         height: 36px;
                         margin-top: 25px;
                         outline: none;
+                        cursor: pointer;
                     }
                 }
 

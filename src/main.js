@@ -9,6 +9,7 @@ import store from './store'
 import './mock/mockServer'
 import 'swiper/css/swiper.css'
 
+
 Vue.component(Pagination.name, Pagination)
 Vue.component(Carousel.name, Carousel)
 Vue.component(TypeNav.name, TypeNav)

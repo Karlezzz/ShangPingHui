@@ -1,45 +1,88 @@
 <template>
     <div class="register">
-        <h3>注册新用户
+        <h3>
+            注册新用户
             <span class="go">我有账号，去 <a href="login.html" target="_blank">登陆</a>
             </span>
         </h3>
         <div class="content">
             <label>手机号:</label>
-            <input type="text" placeholder="请输入你的手机号">
+            <input type="text" placeholder="请输入你的手机号" v-model="phone" />
             <span class="error-msg">错误提示信息</span>
         </div>
         <div class="content">
             <label>验证码:</label>
-            <input type="text" placeholder="请输入验证码">
-            <img ref="code" src="http://182.92.128.115/api/user/passport/code" alt="code">
+            <input type="text" placeholder="请输入验证码" v-model="code" />
+            <button style="width: 100px; height: 38px" @click="getCode">
+                获取验证码
+            </button>
             <span class="error-msg">错误提示信息</span>
         </div>
         <div class="content">
             <label>登录密码:</label>
-            <input type="text" placeholder="请输入你的登录密码">
+            <input type="password" placeholder="请输入你的登录密码" v-model="password" />
             <span class="error-msg">错误提示信息</span>
         </div>
         <div class="content">
             <label>确认密码:</label>
-            <input type="text" placeholder="请输入确认密码">
+            <input type="password" placeholder="请输入确认密码" v-model="repassword" />
             <span class="error-msg">错误提示信息</span>
         </div>
         <div class="controls">
-            <input name="m1" type="checkbox">
+            <input name="m1" type="checkbox" :checked="isAgree" @change="changeAgree($event)" />
             <span>同意协议并注册《尚品汇用户协议》</span>
             <span class="error-msg">错误提示信息</span>
         </div>
         <div class="btn">
-            <button>完成注册</button>
+            <button @click="userRegister">完成注册</button>
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        name: 'Register'
-    }
+        name: "Register",
+        data() {
+            return {
+                phone: "",
+                code: "",
+                password: '',
+                repassword: '',
+                isAgree: false
+            };
+        },
+        methods: {
+            getCode() {
+                this.phone &&
+                    this.$store
+                    .dispatch("getRegisterCode", this.phone)
+                    .then(() => {
+                        this.code = this.$store.state.user.code;
+                    })
+                    .catch((error) => {
+                        console.log(error.message);
+                    });
+            },
+            userRegister() {
+                const data = {
+                    phone: this.phone,
+                    code: this.code,
+                    password: this.password
+                }
+                if (this.phone && this.code && this.password === this.repassword && this.isAgree)
+                    this.$store.dispatch('userRegister', data)
+                    .then(() => {
+                        this.$router.push('/login')
+                    })
+                    .catch((error) => {
+                        console.log(error.message);
+                    })
+            },
+            changeAgree(event) {
+                this.isAgree = event.target.checked
+            }
+        },
+    };
 </script>
 
 <style lang="less" scoped>

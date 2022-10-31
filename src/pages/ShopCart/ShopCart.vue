@@ -13,7 +13,7 @@
       <div class="cart-body">
         <ul class="cart-list" v-for="cart in cartInfoList" :key="cart.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" :checked="cart.isChecked==1">
+            <input type="checkbox" name="chk_list" :checked="cart.isChecked==1" @change="updateChecked(cart,$event)">
           </li>
           <li class="cart-list-con2">
             <img :src="cart.imgUrl">
@@ -23,16 +23,16 @@
             <span class="price">{{cart.skuPrice}}</span>
           </li>
           <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins" @click="handler('min',-1,cart)">-</a>
+            <a href="javascript:void(0)" class="mins" @click="changeSkuNum('min',-1,cart)">-</a>
             <input autocomplete="off" type="text" :value="cart.skuNum" minnum="1" class="itxt"
-              @change="handler('change',$event.target.value*1,cart)">
-            <a href="javascript:void(0)" class="plus" @click="handler('add',1,cart)">+</a>
+              @change="changeSkuNum('change',$event.target.value*1,cart)" ref="skuNumInput">
+            <a href="javascript:void(0)" class="plus" @click="changeSkuNum('add',1,cart)">+</a>
           </li>
           <li class="cart-list-con6">
             <span class="sum">{{cart.skuNum*cart.skuPrice}}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
+            <a class="sindelet" @click="deletCartById(cart)">删除</a>
             <br>
             <a href="#none">移到收藏</a>
           </li>
@@ -43,11 +43,11 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" :checked="isAllChecked">
+        <input class="chooseAll" type="checkbox" :checked="isAllChecked&&cartInfoList.length!=0" @change="allChecked($event)">
         <span>全选</span>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a href="#none" @click="deletAllCheckedCart">删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
@@ -70,6 +70,7 @@
   import {
     mapGetters
   } from 'vuex'
+  import _throttle from 'lodash'
   export default {
     name: 'ShopCart',
     mounted() {
@@ -79,7 +80,7 @@
       getData() {
         this.$store.dispatch('getCartList')
       },
-      handler(type, value, cart) {
+      changeSkuNum: _.throttle(function (type, value, cart) {
         switch (type) {
           case 'add':
             value = 1
@@ -88,7 +89,7 @@
             cart.skuNum > 1 ? value = -1 : value = 0
             break;
           case 'change':
-            (isNaN(value) || value < 0) ? value = 0 : value = parseInt(value) - cart.skuNum
+            (isNaN(value) || value < 0) ? value = 0: value = parseInt(value) - cart.skuNum
             break;
         }
         this.$store.dispatch('addOrUpdateShopCar', {
@@ -96,8 +97,56 @@
             skuNum: value
           })
           .then(() => {
+            if (cart.skuNum === 1 && value === 0 && confirm('是否删除商品？')) {
+              this.deletCartById(cart)
+              this.getData()
+            } else
+              this.getData()
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      }, 1300),
+      deletCartById(cart) {
+        this.$store.dispatch('deleteCartListBySkuId', cart.skuId)
+          .then(() => {
             this.getData()
           })
+          .catch((error) => {
+            alert(error);
+          })
+
+      },
+      updateChecked(cart, event) {
+        this.$store.dispatch('updateCheckBySkuId', {
+            skuId: cart.skuId,
+            isChecked: event.target.checked === true ? '1' : '0'
+          })
+          .then(() => {
+            this.getData()
+          })
+          .catch((error) => {
+            alert(error);
+          })
+      },
+      deletAllCheckedCart() {
+        this.$store.dispatch('deletAllCheckedCart')
+          .then(() => {
+            this.getData()
+          })
+          .catch((error) => {
+            alert(error);
+          })
+      },
+      allChecked(event) {
+        this.$store.dispatch('checkedAll', event)
+          .then(() => {
+            this.getData()
+          })
+          .catch((error) => {
+            alert(error);
+          })
+        
       }
     },
     computed: {
@@ -121,7 +170,6 @@
         return flag == 1 ? true : false
       }
     },
-
   }
 </script>
 
@@ -259,6 +307,7 @@
 
             a {
               color: #666;
+              cursor: pointer;
             }
           }
         }
