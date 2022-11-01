@@ -54,5 +54,9 @@ export const reqLogin = (data) =>requests({
     url:'/user/passport/login',
     method:'post',
     data
+})
 
+export const reqUserInfo = () => requests({
+    url:'/user/passport/auth/getUserInfo',
+    method:'get'
 })

@@ -6,10 +6,14 @@
                 <div class="container">
                     <div class="loginList">
                         <p>尚品汇欢迎您！</p>
-                        <p>
+                        <p v-if="!userName">
                             <span>请</span>
                             <router-link to="/login">登录</router-link>
                             <router-link to='/register' class="register">免费注册</router-link>
+                        </p>
+                        <p v-else>
+                            <a style="cursor: pointer;">{{userName}}</a>
+                            <a style="cursor: pointer;" class="register">退出登录</a>
                         </p>
                     </div>
                     <div class="typeList">
@@ -66,6 +70,11 @@
                 keyword: ''
             }
         },
+        computed:{
+            userName(){
+                return this.$store.state.user.userData.name
+            }
+        }
     }
 </script>
 
@@ -80,7 +89,7 @@
                 width: 1200px;
                 margin: 0 auto;
                 overflow: hidden;
-
+                
                 .loginList {
                     float: left;
 

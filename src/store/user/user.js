@@ -1,19 +1,21 @@
 import {
     reqLogin,
     reqRegisterCode,
+    reqUserInfo,
     reqUserRegister
 } from "@/api"
 
 const state = {
     code: '',
-    token: ''
+    token: sessionStorage.getItem('TOKEN') || '',
+    userData: {}
 }
 const mutations = {
     GETREGISTERCODE(state, data) {
         state.code = data
     },
-    USERLOGIN(state, data) {
-        state.token = data
+    GETUSERINFO(state, data) {
+        state.userData = data
     }
 }
 const actions = {
@@ -40,7 +42,18 @@ const actions = {
     }, data) {
         let result = await reqLogin(data)
         if (result.code === 200) {
-            commit('USERLOGIN', result.data.token)
+            sessionStorage.setItem("TOKEN", result.data.token)
+            return 'ok'
+        } else {
+            return Promise.reject(new Error(result.message))
+        }
+    },
+    async getUserInfo({
+        commit
+    }) {
+        let result = await reqUserInfo()
+        if (result.code === 200) {
+            commit('GETUSERINFO', result.data)
             return 'ok'
         } else {
             return Promise.reject(new Error(result.message))

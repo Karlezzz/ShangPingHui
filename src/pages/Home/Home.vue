@@ -31,6 +31,10 @@
         },
         mounted() {
             this.$store.dispatch('getFloorList')
+            this.$store.dispatch('getUserInfo')
+            .catch((err)=>{
+                console.log(err.message);
+            })
         },
         computed: {
             ...mapState({

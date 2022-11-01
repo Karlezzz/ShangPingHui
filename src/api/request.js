@@ -12,6 +12,9 @@ requests.interceptors.request.use((config) => {
     if(store.state.detail.nanoid_token){
         config.headers.userTempId = store.state.detail.nanoid_token
     }
+    if(sessionStorage.getItem('TOKEN')){
+        config.headers.token = sessionStorage.getItem('TOKEN')
+    }
     nProgress.start()
     return config
 })

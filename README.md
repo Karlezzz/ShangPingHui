@@ -413,7 +413,7 @@ return {
 
 7.完成登录业务逻辑
 
-> 重点
+> ### 重点
 
 1.节流使用lodash工具库，不用自行封装函数
 
@@ -421,4 +421,20 @@ return {
 
 3.注册逻辑，主要是通过接口调用，传入不同参数来实现注册请求
 
-4.登录逻辑，调用登录请求后，得到token，将token储存在sessionStorge中
+4.登录逻辑，调用登录请求后，得到token，将其存储在sessionStorage中
+
+
+
+## 11.1
+
+> ### 内容
+
+1.获取token后，通过发送token验证请求，来获取用户信息，将header登录处内容改变
+
+2.持久化储存token
+
+> ### 重点
+
+1.发送token，不带参数，而是利用请求拦截器发送请求头config.headers.token
+
+2.在登录请求中，actions中将token储存到sessionStorage，state中token直接寻找sessionStorage来获取token
