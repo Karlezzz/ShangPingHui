@@ -60,3 +60,8 @@ export const reqUserInfo = () => requests({
     url:'/user/passport/auth/getUserInfo',
     method:'get'
 })
+
+export const reqLogout=()=>requests({
+    url:'/user/passport/logout',
+    method:'get'
+})

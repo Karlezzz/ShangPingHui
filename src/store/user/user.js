@@ -1,13 +1,19 @@
 import {
     reqLogin,
+    reqLogout,
     reqRegisterCode,
     reqUserInfo,
     reqUserRegister
 } from "@/api"
+import {
+    getToken,
+    removeToken,
+    setToken
+} from "@/utils/token"
 
 const state = {
     code: '',
-    token: sessionStorage.getItem('TOKEN') || '',
+    token: getToken() || '',
     userData: {}
 }
 const mutations = {
@@ -16,6 +22,11 @@ const mutations = {
     },
     GETUSERINFO(state, data) {
         state.userData = data
+    },
+    USERLOGOUT(state) {
+        state.code = ''
+        state.token = ''
+        state.userData = {}
     }
 }
 const actions = {
@@ -42,7 +53,7 @@ const actions = {
     }, data) {
         let result = await reqLogin(data)
         if (result.code === 200) {
-            sessionStorage.setItem("TOKEN", result.data.token)
+            setToken(result.data.token)
             return 'ok'
         } else {
             return Promise.reject(new Error(result.message))
@@ -54,6 +65,18 @@ const actions = {
         let result = await reqUserInfo()
         if (result.code === 200) {
             commit('GETUSERINFO', result.data)
+            return 'ok'
+        } else {
+            return Promise.reject(new Error(result.message))
+        }
+    },
+    async userLogOut({
+        commit
+    }) {
+        let result = await reqLogout()
+        if (result.code === 200) {
+            removeToken()
+            commit("USERLOGOUT")
             return 'ok'
         } else {
             return Promise.reject(new Error(result.message))

@@ -438,3 +438,35 @@ return {
 1.发送token，不带参数，而是利用请求拦截器发送请求头config.headers.token
 
 2.在登录请求中，actions中将token储存到sessionStorage，state中token直接寻找sessionStorage来获取token
+
+
+
+## 11.2
+
+> ### 内容
+
+1.退出登录
+
+2.将关于token的操作进行封装
+
+3.设置路由守卫（登录后不能跳转login，非登录不能跳转shopCart）
+
+4.trade静态页面，配置路由跳转
+
+> ### 重点
+
+1.退出登录，需要将仓库token，userData清空，将sessionStorage的token清空
+
+2.全局前置守卫：
+
+​	当用户已经登录：
+
+​		①token有效：用户不能跳转login
+
+​		②token有效，有用户信息：可以通行
+
+​		③token有效，无用户信息：先请求获取用户信息，再跳转
+
+​		④token无效：用户退出，token清除，用户信息清除，返回login
+
+​	

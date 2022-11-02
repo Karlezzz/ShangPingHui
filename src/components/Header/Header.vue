@@ -13,7 +13,7 @@
                         </p>
                         <p v-else>
                             <a style="cursor: pointer;">{{userName}}</a>
-                            <a style="cursor: pointer;" class="register">退出登录</a>
+                            <a style="cursor: pointer;" class="register" @click="logout">退出登录</a>
                         </p>
                     </div>
                     <div class="typeList">
@@ -63,6 +63,13 @@
                 }
                 this.$router.push(location)
                 this.keyword = ''
+            },
+            logout(){
+                this.$store.dispatch('userLogOut')
+                .then(()=>{
+                    this.$router.push('/home')
+                })
+                
             }
         },
         data() {

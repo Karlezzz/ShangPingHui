@@ -5,6 +5,7 @@ import Register from '../pages/Register/Register.vue'
 import Detail from '../pages/Detail/Detail.vue'
 import AddCartSuccess from '../pages/AddCartSuccess/AddCartSuccess.vue'
 import ShopCart from '../pages/ShopCart/ShopCart.vue'
+import Trade from '../pages/Trade/Trade.vue'
 
 export default [{
         name: 'login',
@@ -69,5 +70,12 @@ export default [{
             isShow: true
         }
     },
+    {
+        name: 'tarde',
+        path: '/trade',
+        component: Trade,
+        meta: {
+            isShow: true
+        }
+    },
 ]
-

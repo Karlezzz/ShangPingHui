@@ -68,7 +68,7 @@ export default {
                 this.$store
                     .dispatch("userLogin", data)
                     .then(() => {
-                        this.$router.push("/home");                     
+                        this.$router.go(-1)
                     })
                     .catch((error) => {
                         console.log(error.message);
