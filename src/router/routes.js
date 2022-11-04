@@ -6,6 +6,8 @@ import Detail from '../pages/Detail/Detail.vue'
 import AddCartSuccess from '../pages/AddCartSuccess/AddCartSuccess.vue'
 import ShopCart from '../pages/ShopCart/ShopCart.vue'
 import Trade from '../pages/Trade/Trade.vue'
+import Pay from '../pages/Pay/Pay.vue'
+import PaySuccess from '../pages/PaySuccess/PaySuccess.vue';
 
 export default [{
         name: 'login',
@@ -74,6 +76,22 @@ export default [{
         name: 'tarde',
         path: '/trade',
         component: Trade,
+        meta: {
+            isShow: true
+        }
+    },
+    {
+        name: 'pay',
+        path: '/pay',
+        component: Pay,
+        meta: {
+            isShow: true
+        }
+    },
+    {
+        name: 'paySuccess',
+        path: '/paySuccess',
+        component: PaySuccess,
         meta: {
             isShow: true
         }

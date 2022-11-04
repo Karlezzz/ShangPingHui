@@ -44,34 +44,51 @@ export const reqRegisterCode = (phone) => requests({
     method: 'get'
 })
 
-export const reqUserRegister = (data)=>requests({
-    url:'/user/passport/register',
-    method:'post',
+export const reqUserRegister = (data) => requests({
+    url: '/user/passport/register',
+    method: 'post',
     data
 })
 
-export const reqLogin = (data) =>requests({
-    url:'/user/passport/login',
-    method:'post',
+export const reqLogin = (data) => requests({
+    url: '/user/passport/login',
+    method: 'post',
     data
 })
 
 export const reqUserInfo = () => requests({
-    url:'/user/passport/auth/getUserInfo',
-    method:'get'
+    url: '/user/passport/auth/getUserInfo',
+    method: 'get'
 })
 
-export const reqLogout=()=>requests({
-    url:'/user/passport/logout',
-    method:'get'
+export const reqLogout = () => requests({
+    url: '/user/passport/logout',
+    method: 'get'
 })
 
-export const reqUserAddress= ()=>requests({
-    url:'/user/userAddress/auth/findUserAddressList',
-    method:'get'
+export const reqUserAddress = () => requests({
+    url: '/user/userAddress/auth/findUserAddressList',
+    method: 'get'
 })
 
-export const reqOrderInfo= ()=>requests({
-    url:'/order/auth/trade',
-    method:'get'
+export const reqOrderInfo = () => requests({
+    url: '/order/auth/trade',
+    method: 'get'
+})
+
+
+export const reqSubmitOrder = (tradeNo, data) => requests({
+    url: `/order/auth/submitOrder?tradeNo=${tradeNo}`,
+    method: 'post',
+    data
+})
+
+export const reqPayInfo = (orderId) => requests({
+    url: `/payment/weixin/createNative/${orderId}`,
+    method: 'get'
+})
+
+export const reqPayStatus = (orderId) => requests({
+    url: `/payment/weixin/queryPayStatus/${orderId}`,
+    method: 'get'
 })

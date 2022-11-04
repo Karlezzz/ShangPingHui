@@ -35,41 +35,27 @@
 
       <div class="detail">
         <h5>商品清单</h5>
-        <ul class="list clearFix">
+        <ul class="list clearFix" v-for="i in tradeInfo.detailArrayList" :key="i.skuId">
           <li>
-            <img src="./images/goods.png" alt="">
+            <img :src="i.imgUrl" alt="" style="width:100px;height:100px">
           </li>
           <li>
             <p>
-              Apple iPhone 6s (A1700) 64G 玫瑰金色 移动联通电信4G手机硅胶透明防摔软壳 本色系列</p>
+              {{i.skuName}}</p>
             <h4>7天无理由退货</h4>
           </li>
           <li>
-            <h3>￥5399.00</h3>
+            <h3>￥{{i.orderPrice}}.00</h3>
           </li>
-          <li>X1</li>
+          <li>X{{i.skuNum}}</li>
           <li>有货</li>
         </ul>
-        <ul class="list clearFix">
-          <li>
-            <img src="./images/goods.png" alt="">
-          </li>
-          <li>
-            <p>
-              Apple iPhone 6s (A1700) 64G 玫瑰金色 移动联通电信4G手机硅胶透明防摔软壳 本色系列</p>
-            <h4>7天无理由退货</h4>
-          </li>
-          <li>
-            <h3>￥5399.00</h3>
-          </li>
-          <li>X1</li>
-          <li>有货</li>
-        </ul>
+
       </div>
 
       <div class="bbs">
         <h5>买家留言：</h5>
-        <textarea placeholder="建议留言前先与商家沟通确认" class="remarks-cont"></textarea>
+        <textarea placeholder="建议留言前先与商家沟通确认" class="remarks-cont" v-model="message"></textarea>
       </div>
 
       <div class="line"></div>
@@ -83,8 +69,8 @@
     <div class="money clearFix">
       <ul>
         <li>
-          <b><i>1</i>件商品，总商品金额</b>
-          <span>¥5399.00</span>
+          <b><i>{{tradeInfo.totalNum}}</i>件商品，总商品金额</b>
+          <span>¥{{tradeInfo.totalAmount}}.00</span>
         </li>
         <li>
           <b>返现：</b>
@@ -97,7 +83,7 @@
       </ul>
     </div>
     <div class="trade">
-      <div class="price">应付金额:　<span>¥5399.00</span></div>
+      <div class="price">应付金额:　<span>¥{{tradeInfo.totalAmount}}.00</span></div>
       <div class="receiveInfo">
         寄送至:
         <span>{{userDefaultAddress.fullAddress}}</span>
@@ -106,17 +92,23 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <a class="subBtn" to="/pay" @click="submitOrder">提交订单</a>
     </div>
   </div>
 </template>
 
 <script>
-  import {
+import {
     mapState
   } from 'vuex'
   export default {
     name: 'Trade',
+    data() {
+      return {
+        message: '',
+        orderId:''
+      }
+    },
     mounted() {
       this.$store.dispatch('getUserAdress')
       this.$store.dispatch('getOrderInfo')
@@ -124,13 +116,13 @@
     computed: {
       ...mapState({
         userAddress: (state) => state.trade.userAddress,
-        // tradeInfo: (state) => state.trade.tradeInfo,
+        tradeInfo: (state) => state.trade.tradeInfo,
         // orderId:state=>state.trade.payId
       }),
       userDefaultAddress() {
         return this.userAddress.find(item =>
           item.isDefault == 1
-        )||{}
+        ) || {}
       }
     },
     methods: {
@@ -139,6 +131,29 @@
           item.isDefault = '0'
         });
         index.isDefault = '1'
+      },
+      async submitOrder() {
+        let tradeNo = this.tradeInfo.tradeNo
+        let data = {
+          "consignee": this.userDefaultAddress.consignee,
+          // "consignee": 'mai',
+          "consigneeTel": this.userDefaultAddress.phoneNum,
+          // "consigneeTel": '110',
+          "deliveryAddress": this.userDefaultAddress.fullAddress,
+          // "deliveryAddress": 'wc',
+          "paymentWay": "ONLINE",
+          "orderComment": this.message,
+          "orderDetailList": this.tradeInfo.detailArrayList
+        }
+
+        let result = await this.$API.reqSubmitOrder(tradeNo, data)
+        if(result.code==200){
+          this.orderId = result.data
+          this.$router.push('/pay?orderId='+this.orderId)
+        }else{
+          alert(result.data)
+        }
+
       }
     },
   }
@@ -291,7 +306,7 @@
             line-height: 30px;
 
             p {
-
+              width: 350px;
               margin-bottom: 20px;
             }
 
@@ -392,6 +407,7 @@
         text-align: center;
         color: #fff;
         background-color: #e1251b;
+        cursor: pointer;
 
       }
     }

@@ -4,14 +4,14 @@ import {
 } from '@/api/index'
 const state = {
     userAddress: [],
-    orderInfo : {}
+    tradeInfo : {}
 }
 const mutations = {
     GETUSERADRESS(state, data) {
         state.userAddress = data
     },
     GETORDERINFO(state,data){
-        state.orderInfo = data
+        state.tradeInfo = data
     }
 }
 const actions = {
