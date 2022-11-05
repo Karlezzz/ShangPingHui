@@ -8,6 +8,9 @@ import ShopCart from '../pages/ShopCart/ShopCart.vue'
 import Trade from '../pages/Trade/Trade.vue'
 import Pay from '../pages/Pay/Pay.vue'
 import PaySuccess from '../pages/PaySuccess/PaySuccess.vue';
+import Center from '../pages/Center/Center.vue';
+import MyOrder from '../pages/Center/myOrder/MyOrder.vue'
+import GroupOrder from '../pages/Center/groupOrder/GroupOrder.vue'
 
 export default [{
         name: 'login',
@@ -78,6 +81,12 @@ export default [{
         component: Trade,
         meta: {
             isShow: true
+        },
+        beforeEnter: (to, from, next) => {
+            if(from.path=='/shopCart'||from.path=='/'){
+                next()
+            }
+            else console.log(2);
         }
     },
     {
@@ -86,6 +95,10 @@ export default [{
         component: Pay,
         meta: {
             isShow: true
+        },
+        beforeEnter: (to, from, next) => {
+            if(from.path=='/trade'||from.path=='/')next()
+            else next(false)
         }
     },
     {
@@ -94,6 +107,27 @@ export default [{
         component: PaySuccess,
         meta: {
             isShow: true
-        }
+        },
+    },
+    {
+        name: 'center',
+        path: '/center',
+        component: Center,
+        meta: {
+            isShow: true
+        },
+        children: [{
+                path: 'myOrder',
+                component: MyOrder
+            },
+            {
+                path: 'groupOrder',
+                component: GroupOrder
+            },
+            {
+                path: '/center',
+                redirect: '/center/myOrder'
+            }
+        ]
     },
 ]

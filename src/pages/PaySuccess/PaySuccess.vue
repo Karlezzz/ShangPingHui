@@ -20,6 +20,11 @@
 <script>
   export default {
     name: 'PaySuccess',
+    beforeRouteEnter(to,from,next){
+      let fromPath = from.path
+      if(fromPath=='/pay'||fromPath=='/')next()
+      else next(false)
+    }
   }
 </script>
 

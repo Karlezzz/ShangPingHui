@@ -39,21 +39,27 @@ router.beforeEach((to, from, next) => {
     if (token) {
         if (to.path == '/login')
             next(from)
-        else{
-            if(userName)
+        else {
+            if (userName)
                 next()
-            else{
+            else {
                 store.dispatch('getUserInfo')
-                .then(next())
-                .catch((error)=>{
-                    store.dispatch('userLogOut')
-                    .then(next('/login'))
-                })
+                    .then(next())
+                    .catch((error) => {
+                        store.dispatch('userLogOut')
+                            .then(next('/login'))
+                    })
             }
         }
-            
+
     } else {
-        next()
+        let toPath = to.path
+        const cantGo = ['/trade', '/pay', '/paySuccess', '/center/myOrder']
+        if (cantGo.indexOf(toPath) != -1)
+            next('/login?redirect='+toPath)
+        else {
+            next()
+        }
     }
 })
 

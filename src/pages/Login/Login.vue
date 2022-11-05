@@ -68,7 +68,8 @@ export default {
                 this.$store
                     .dispatch("userLogin", data)
                     .then(() => {
-                        this.$router.go(-1)
+                        let toPath = this.$route.query.redirect||'/home'
+                        this.$router.push(toPath)
                     })
                     .catch((error) => {
                         console.log(error.message);
