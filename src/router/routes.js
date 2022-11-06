@@ -1,21 +1,7 @@
-import Login from '../pages/Login/Login.vue'
-import Search from '../pages/Search/Search.vue'
-import Home from '../pages/Home/Home.vue'
-import Register from '../pages/Register/Register.vue'
-import Detail from '../pages/Detail/Detail.vue'
-import AddCartSuccess from '../pages/AddCartSuccess/AddCartSuccess.vue'
-import ShopCart from '../pages/ShopCart/ShopCart.vue'
-import Trade from '../pages/Trade/Trade.vue'
-import Pay from '../pages/Pay/Pay.vue'
-import PaySuccess from '../pages/PaySuccess/PaySuccess.vue';
-import Center from '../pages/Center/Center.vue';
-import MyOrder from '../pages/Center/myOrder/MyOrder.vue'
-import GroupOrder from '../pages/Center/groupOrder/GroupOrder.vue'
-
 export default [{
         name: 'login',
         path: '/login',
-        component: Login,
+        component: ()=>import('@/pages/Login/Login.vue'),
         meta: {
             isShow: false
         }
@@ -23,7 +9,7 @@ export default [{
     {
         name: 'search',
         path: '/search/:keyword?',
-        component: Search,
+        component: ()=>import('@/pages/Search/Search.vue'),
         meta: {
             isShow: true
         }
@@ -31,7 +17,7 @@ export default [{
     {
         name: 'home',
         path: '/home',
-        component: Home,
+        component: ()=>import('@/pages/Home/Home.vue'),
         meta: {
             isShow: true
         }
@@ -39,9 +25,9 @@ export default [{
     {
         name: 'register',
         path: '/register',
-        component: Register,
+        component: ()=>import('@/pages/Register/Register.vue'),
         meta: {
-            isShow: false
+            isShow: true
         }
     },
     {
@@ -54,7 +40,7 @@ export default [{
     {
         path: '/detail/:skuid',
         name: 'detail',
-        component: Detail,
+        component: ()=>import('@/pages/Detail/Detail.vue'),
         meta: {
             isShow: false
         }
@@ -62,7 +48,7 @@ export default [{
     {
         name: 'addCartSuccess',
         path: '/addCartSuccess',
-        component: AddCartSuccess,
+        component: ()=>import('@/pages/AddCartSuccess/AddCartSuccess.vue'),
         meta: {
             isShow: true
         }
@@ -70,7 +56,7 @@ export default [{
     {
         name: 'shopCart',
         path: '/shopCart',
-        component: ShopCart,
+        component: ()=>import('@/pages/ShopCart/ShopCart.vue'),
         meta: {
             isShow: true
         }
@@ -78,7 +64,7 @@ export default [{
     {
         name: 'tarde',
         path: '/trade',
-        component: Trade,
+        component: ()=>import('@/pages/Trade/Trade'),
         meta: {
             isShow: true
         },
@@ -92,7 +78,7 @@ export default [{
     {
         name: 'pay',
         path: '/pay',
-        component: Pay,
+        component: ()=>import('@/pages/Pay/Pay.vue'),
         meta: {
             isShow: true
         },
@@ -104,7 +90,7 @@ export default [{
     {
         name: 'paySuccess',
         path: '/paySuccess',
-        component: PaySuccess,
+        component: ()=>import('@/pages/PaySuccess/PaySuccess.vue'),
         meta: {
             isShow: true
         },
@@ -112,17 +98,17 @@ export default [{
     {
         name: 'center',
         path: '/center',
-        component: Center,
+        component: ()=>import('@/pages/Center/Center.vue'),
         meta: {
             isShow: true
         },
         children: [{
                 path: 'myOrder',
-                component: MyOrder
+                component: ()=>import('@/pages/Center/myOrder/MyOrder.vue')
             },
             {
                 path: 'groupOrder',
-                component: GroupOrder
+                component: ()=>import('@/pages/Center/groupOrder/GroupOrder')
             },
             {
                 path: '/center',

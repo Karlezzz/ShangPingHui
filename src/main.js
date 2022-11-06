@@ -12,6 +12,7 @@ import * as API from './api/index'
 import 'element-ui/lib/theme-chalk/index.css';
 import { MessageBox } from 'element-ui'
 import VueLazyload from 'vue-lazyload'
+import '@/plugins/validate'
 
 Vue.prototype.$msgbox = MessageBox
 Vue.prototype.$alert = MessageBox.alert
